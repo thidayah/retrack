@@ -2,8 +2,55 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useMap } from "react-leaflet";
+import polyline from "@mapbox/polyline";
 import L from "leaflet";
 import "leaflet-routing-machine";
+
+const customRouter = {
+  route: function (waypoints, callback, context) {
+    this._pendingRequest = true;
+
+    fetch("/api/ors", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        coordinates: waypoints.map(w => [w.latLng.lng, w.latLng.lat]),
+        format: "geojson"
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        this._pendingRequest = null;
+
+        const route = data.routes[0];
+        const decoded = polyline.decode(route.geometry);
+        const coordinates = decoded.map(([lat, lng]) => ({
+          lat,
+          lng,
+        }));
+
+        const result = [{
+          name: "Route",
+          coordinates,
+          instructions: [],
+          summary: {
+            totalDistance: route.summary.distance,
+            totalTime: route.summary.duration,
+          },
+          inputWaypoints: waypoints,
+          waypoints: waypoints,
+        }];
+
+        callback.call(context, null, result);
+      })
+      .catch(err => {
+        this._pendingRequest = null;
+        callback.call(context, err);
+      });
+  }
+};
 
 export default function Routing({
   waypoints,
@@ -25,8 +72,6 @@ export default function Routing({
 
       undoStack.current.push([...waypoints]);
       redoStack.current = [];
-
-
 
       setWaypoints(prev => {
         const last = prev[prev.length - 1];
@@ -75,9 +120,10 @@ export default function Routing({
             { color: "#ff8126", weight: 3 },
           ],
         },
+        // router: customRouter
         router: L.Routing.osrmv1({
           serviceUrl: "https://router.project-osrm.org/route/v1",
-        }),
+        })
       }).addTo(map);
 
       // 🔥 EXTRACT ROUTE DATA
@@ -104,8 +150,8 @@ export default function Routing({
           .filter(w => w.latLng)
           .map(w => w.latLng);
 
-          console.log({newWaypoints});
-          
+        // console.log({ newWaypoints });
+
 
         // setWaypoints(prev => {
         //   undoStack.current.push([...prev]);

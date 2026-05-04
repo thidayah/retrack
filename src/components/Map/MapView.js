@@ -333,7 +333,7 @@ const MapViewInner = dynamic(() => import("./MapInner"), {
   ssr: false,
 });
 
-export default function MapView() {
+export default function MapView({ setRouteData }) {
   const [waypoints, setWaypoints] = useState([]);
 
   const undoStack = useRef([]);
@@ -345,6 +345,7 @@ export default function MapView() {
       setWaypoints={setWaypoints}
       undoStack={undoStack}
       redoStack={redoStack}
+      setRouteData={setRouteData}
     />
   );
 }
