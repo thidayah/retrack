@@ -4,6 +4,7 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import Routing from "./Routing";
 import RouteControlButtons from "./RouteControlButtons";
 import LocateControl from "./LocateControl";
+import MapControls from "../MapControls";
 
 export default function MapInner({
   waypoints,
@@ -18,8 +19,8 @@ export default function MapInner({
       center={[-6.8731786, 107.5365777]}
 
       zoom={13}
-      zoomControl={true}
-      className="h-full w-full"
+      zoomControl={false}
+      className="h-175 lg:h-full w-full border border-gray-200 rounded-2xl z-10 relative"
     >
       <TileLayer
         // attribution="&copy; OpenStreetMap"
@@ -37,7 +38,21 @@ export default function MapInner({
         url={`https://api.maptiler.com/maps/streets-v4/{z}/{x}/{y}.png?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`}
       />
 
-      <LocateControl />
+      {/* <LocateControl /> */}
+      {/* <RouteControlButtons
+        waypoints={waypoints}
+        setWaypoints={setWaypoints}
+        undoStack={undoStack}
+        redoStack={redoStack}
+      /> */}
+      
+      <MapControls
+        waypoints={waypoints}
+        setWaypoints={setWaypoints}
+        undoStack={undoStack}
+        redoStack={redoStack}
+        setRouteData={setRouteData}
+      />
 
       <Routing
         waypoints={waypoints}
@@ -47,12 +62,6 @@ export default function MapInner({
         setRouteData={setRouteData}
       />
 
-      <RouteControlButtons
-        waypoints={waypoints}
-        setWaypoints={setWaypoints}
-        undoStack={undoStack}
-        redoStack={redoStack}
-      />
     </MapContainer>
   );
 }

@@ -14,7 +14,7 @@ export default function Header() {
           <span className="text-xl font-extrabold text-gray-900">Re<span className="text-primary">Track</span></span>
         </Link>
 
-        <button className="flex items-center gap-2 px-4 py-2 rounded-xl hover:shadow transition cursor-pointer">
+        <button className="flex items-center gap-2 lg:px-4 lg:py-2 rounded-xl hover:shadow transition cursor-pointer">
           <Coffee /> 
           {/* Traktir Kopi */}
         </button>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useMap } from "react-leaflet";
 import polyline from "@mapbox/polyline";
 import L from "leaflet";
@@ -67,6 +67,11 @@ export default function Routing({
   // 🧩 HANDLE CLICK MAP
   useEffect(() => {
     const handleClick = (e) => {
+      const target = e.originalEvent?.target;
+
+      // 🔥 cek apakah klik dari control UI
+      if (target.closest(".map-control")) return;
+
       const { lat, lng } = e.latlng;
       const newPoint = L.latLng(lat, lng);
 
