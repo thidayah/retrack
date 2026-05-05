@@ -1,27 +1,8 @@
+import { generateTrackpointsV2 } from "@/lib/generator/trackpoints";
 import { Footprints, NotepadText, SportShoe, Mountain, Bike, MountainSnow, ChevronDown, Download } from "lucide-react";
 import { useState } from "react";
 
-export default function ActivityForm() {
-  const getLocalDateTime = (date = new Date()) => {
-    const pad = (num) => String(num).padStart(2, "0");
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-  };
-
-  const [form, setForm] = useState({
-    name: "",
-    description: "",
-    startTime: getLocalDateTime(), // default sekarang
-    activityType: "Run",
-    isDuration: true,
-    duration: "01:15",
-    pace: "06:45",
-    heartRate: "145",
-    cadence: "170",
-    device: "",
-    exportType: "GPX",
-  });
-
-  console.log({form});  
+export default function ActivityForm({ form, setForm, onDownload }) {
 
   const paceToSeconds = (pace = "04:00") => {
     const [minutes, seconds] = pace.split(":").map(Number);
@@ -44,14 +25,21 @@ export default function ActivityForm() {
   ];
 
   const deviceOptions = [
-    "Garmin",
+    "Garmin Forerunner 255",
+    "Garmin Forerunner 645 Music",
+    "Garmin fēnix 7",
+    "Garmin Instinct 2",
+    "Garmin Enduro",
     "Coros",
-    "Amazfit",
-    "Strava App",
+    "Amazfit T-Rex 3",
+    "Amazfit Active Max",
+    // "Apple Watch",
+    "StravaGpx",
   ];
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 shadow p-5">
+    // <div className="bg-white rounded-2xl border border-gray-200 shadow p-5 col-span-6 md:col-span-2">
+    <div className="bg-white rounded-2xl border border-gray-200 shadow p-5 flex-2">
       <div className="space-y-4">
         <h3 className="font-semibold uppercase flex items-center gap-2">
           <NotepadText />
@@ -174,20 +162,22 @@ export default function ActivityForm() {
         </div>
 
         {/* Cadence */}
-        <div>
-          <div className=" flex justify-between items-center">
-            <label className="block text-sm font-bold text-gray-700 pb-1">Cadence</label>
-            <span className="text-sm text-gray-500">{form.cadence || '170'} spm</span>
+        {form.activityType !== 'Ride' && (
+          <div>
+            <div className=" flex justify-between items-center">
+              <label className="block text-sm font-bold text-gray-700 pb-1">Cadence</label>
+              <span className="text-sm text-gray-500">{form.cadence || '170'} spm</span>
+            </div>
+            <input
+              type="range"
+              min={100}
+              max={190}
+              className="w-full bg-linear-to-r from-primary/20 via-primary/90 to-primary appearance-none rounded-full h-1.5 cursor-pointer accent-primary"
+              value={form.cadence}
+              onChange={(e) => setForm({ ...form, cadence: e.target.value })}
+            />
           </div>
-          <input
-            type="range"
-            min={150}
-            max={190}
-            className="w-full bg-linear-to-r from-primary/20 via-primary/90 to-primary appearance-none rounded-full h-1.5 cursor-pointer accent-primary"
-            value={form.cadence}
-            onChange={(e) => setForm({ ...form, cadence: e.target.value })}
-          />
-        </div>
+        )}
 
         <div>
           <label className="block text-sm font-bold text-gray-700 pb-1">Perangkat</label>
@@ -227,7 +217,10 @@ export default function ActivityForm() {
           </div>
         </div>
 
-        <button className="w-full bg-primary hover:bg-primary/75 text-white font-bold py-3 rounded-lg flex gap-2 items-center justify-center cursor-pointer mt-8">
+        <button
+          className="w-full bg-primary hover:bg-primary/75 text-white font-bold py-3 rounded-lg flex gap-2 items-center justify-center cursor-pointer mt-8"
+          onClick={onDownload}
+        >
           <Download className="size-5 font-bold" />
           Unduh Aktivitas
         </button>

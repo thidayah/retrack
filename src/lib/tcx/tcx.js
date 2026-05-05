@@ -2,10 +2,9 @@ import { calculateDistance } from "@/helper";
 
 export function generateTCX(trackpoints, options = {}) {
   const {
-    name = "ReTrack Activity",
-    sport = "Running",
+    type = "Running",
+    author = "Garmin Forerunner 55",
     startTime = trackpoints[0]?.time,
-    creator = "Garmin Forerunner 55",
   } = options;
 
   const totalTimeSeconds =
@@ -20,7 +19,7 @@ export function generateTCX(trackpoints, options = {}) {
   xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2">
 
   <Activities>
-    <Activity Sport="${sport}">
+    <Activity Sport="${type}">
       <Id>${startTime}</Id>
 
       <Lap StartTime="${startTime}">
@@ -33,7 +32,7 @@ export function generateTCX(trackpoints, options = {}) {
         </Track>
       </Lap>
       <Creator>
-        <Name>${creator}</Name>
+        <Name>${author}</Name>
       </Creator>
     </Activity>
   </Activities>

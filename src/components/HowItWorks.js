@@ -24,7 +24,7 @@ export default function HowItWorks() {
     },
     {
       title: "Upload ke Strava",
-      description: "Unggah file rute yang telah dibuat ke Strava dan bagikan aktivitasmu dengan teman-temanmu.",
+      description: "Unggah file rute yang telah dibuat ke website Strava dan bagikan aktivitasmu dengan teman-temanmu.",
       icon: Upload,
     }
   ];
@@ -36,17 +36,21 @@ export default function HowItWorks() {
         <div className="w-20 h-1 bg-primary mx-auto mt-3 rounded-full"></div>
       </div>
 
-      <div className="grid grid-cols-5 gap-8">
+      <div className="grid lg:grid-cols-5 gap-8">
         {steps.map((step, i) => (
-          <div key={i} className="text-center">
-            <div className="w-16 h-16 mx-auto bg-gray-500 text-white rounded-full flex items-center justify-center mb-4">
+          <div key={i} className="lg:text-center flex flex-row lg:flex-col  space-x-4">
+            <div className="w-14 h-14 lg:w-16 lg:h-16 lg:mx-auto bg-gray-500 text-white rounded-full flex items-center justify-center lg:mb-4">
               <step.icon size={24} />
             </div>
-            <div className="w-6 h-6 mx-auto bg-green-600 text-white font-bold rounded-full flex items-center justify-center mb-2">
-              {i + 1}
+            <div className=" flex flex-col w-4/5 lg:w-full">
+              <div className=" flex flex-row gap-2 items-center lg:justify-center mb-2">
+                <div className="w-6 h-6 bg-green-600 text-white font-bold rounded-full flex justify-center items-center  ">
+                  {i + 1}
+                </div>
+                <h3 className="md:text-xl font-semibold text-gray-900">{step.title}</h3>
+              </div>
+              <p className="text-sm md:text-base text-gray-600">{step.description}</p>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">{step.title}</h3>
-            <p className="text-sm text-gray-600">{step.description}</p>
           </div>
         ))}
       </div>
