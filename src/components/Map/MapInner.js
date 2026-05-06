@@ -20,7 +20,7 @@ export default function MapInner({
 
       zoom={13}
       zoomControl={false}
-      className="h-175 lg:h-full w-full border border-gray-200 rounded-2xl z-10 relative"
+      className="h-150 lg:h-full w-full border border-gray-200 rounded-2xl z-10 relative"
     >
       <TileLayer
         // attribution="&copy; OpenStreetMap"

@@ -123,7 +123,7 @@ export default function MapSection() {
   }
 
   return (
-    <section className="container mx-auto px-4 md:px-6 py-16">
+    <section className="container mx-auto px-4 md:px-6 py-16 md:py-20" id="activity">
       {/* <div className="grid grid-cols-[300px_1fr] gap-6"> */}
       <div className="flex flex-col-reverse lg:flex-row gap-6" >
         {/* LEFT PANEL */}
