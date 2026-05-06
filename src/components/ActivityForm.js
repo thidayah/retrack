@@ -26,7 +26,6 @@ export default function ActivityForm({ form, setForm, onDownload }) {
 
   const deviceOptions = [
     "Garmin Forerunner 255",
-    "Garmin Forerunner 645 Music",
     "Garmin fēnix 7",
     "Garmin Instinct 2",
     "Garmin Enduro",
