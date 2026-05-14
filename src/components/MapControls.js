@@ -139,9 +139,9 @@ export default function MapControls({
         <button className={btn} onClick={handleRedo}>
           <Redo2 className="size-3 md:size-4" />
         </button>
-        <button className={btn} onClick={handleReverse}>
+        {/* <button className={btn} onClick={handleReverse}>
           <ArrowLeftRight className="size-3 md:size-4" />
-        </button>
+        </button> */}
         <button className={`${btn} text-red-500`} onClick={handleClear}>
           <Trash className="size-3 md:size-4" />
         </button>
@@ -152,9 +152,9 @@ export default function MapControls({
         <button className={btn} onClick={handleLocation}>
           <Locate className="size-3 md:size-4" />
         </button>
-        <button className={`${btn} text-blue-500`} onClick={handleSearch}>
+        {/* <button className={`${btn} text-blue-500`} onClick={handleSearch}>
           <Search className="size-3 md:size-4" />
-        </button>
+        </button> */}
       </div>
     </div>
   );
