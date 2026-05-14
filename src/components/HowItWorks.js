@@ -1,4 +1,4 @@
-import { MapPin, Edit, FileText, Download, Upload } from 'lucide-react';
+import { MapPin, Edit, FileText, Download, Upload, AlertTriangle } from 'lucide-react';
 
 export default function HowItWorks() {
   const steps = [
@@ -53,6 +53,28 @@ export default function HowItWorks() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Legal Disclaimer */}
+      <div className="mt-12 mx-auto bg-amber-50 border border-amber-200 rounded-2xl p-5 flex gap-4">
+        <div className="shrink-0 mt-0.5">
+          <AlertTriangle className="w-5 h-5 text-amber-500" />
+        </div>
+        <div>
+          <p className="text-sm font-semibold text-amber-800 mb-1">Disclaimer</p>
+          <p className="text-xs text-amber-700 leading-relaxed">
+            ReTrack hanya ditujukan untuk membantu pengguna yang aktivitas Strava-nya terputus akibat masalah teknis seperti GPS hilang atau baterai habis. Penggunaan alat ini untuk memalsukan aktivitas, manipulasi data, atau melanggar{' '}
+            <a
+              href="https://www.strava.com/legal/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-amber-900"
+            >
+              Ketentuan Layanan Strava
+            </a>{' '}
+            sepenuhnya menjadi tanggung jawab pengguna. Kami tidak bertanggung jawab atas penyalahgunaan aplikasi ini.
+          </p>
+        </div>
       </div>
     </section>
   );
