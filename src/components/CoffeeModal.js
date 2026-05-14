@@ -1,9 +1,15 @@
 'use client';
 
-import { X, Coffee, Heart } from 'lucide-react';
-import { useEffect } from 'react';
+import { X, Coffee } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function CoffeeModal({ isOpen, onClose }) {
+  const [imgLoaded, setImgLoaded] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) setImgLoaded(false);
+  }, [isOpen]);
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -44,7 +50,7 @@ export default function CoffeeModal({ isOpen, onClose }) {
         {/* Title */}
         <div className="text-center">
           <h2 className="text-xl font-extrabold text-gray-900">
-            Jajanin Aku Kopi Dongsss ☕
+            Jajanin Aku Kopi Dongsss
           </h2>
           <p className="text-sm text-gray-500 mt-1">
             Bikin aku semangat ngoding sambil ngopi — scan QR di bawah ya!
@@ -52,9 +58,16 @@ export default function CoffeeModal({ isOpen, onClose }) {
         </div>
 
         {/* QR Code area */}
-        <div className="w-full h-full rounded-xl border-2 border-dashed border-primary/80 bg-amber-50 flex flex-col items-center justify-center gap-2">
-          {/* Replace the content below with your actual QR code image: */}
-          <img src="/qris.png" alt="QR Donasi" className="w-full h-full object-contain rounded-xl" />
+        <div className="w-full rounded-xl border-2 border-dashed border-primary/80 bg-amber-50 flex flex-col items-center justify-center gap-2 overflow-hidden">
+          {!imgLoaded && (
+            <div className="w-full h-80 bg-gray-300 animate-pulse rounded-xl" />
+          )}
+          <img
+            src="/qris.png"
+            alt="QR Donasi"
+            className={`w-full object-contain rounded-xl transition-opacity duration-300 ${imgLoaded ? 'opacity-100' : 'opacity-0 h-0'}`}
+            onLoad={() => setImgLoaded(true)}
+          />
 
           {/* <Coffee className="w-10 h-10 text-amber-300" />
           <span className="text-xs text-amber-400 text-center px-2">
