@@ -11,9 +11,7 @@ import { generateTrackpointsV2, generateTrackpointsV3 } from "@/lib/generator/tr
 import { downloadFile, getDistance, getDurationFromDistanceAndPace, getLocalDateTime, getPaceFromDistanceAndDuration, meterToKm } from "@/helper";
 
 export default function MapSection() {
-  const [routeData, setRouteData] = useState(null);
-  const [isCoffeeOpen, setIsCoffeeOpen] = useState(false);
-  const [form, setForm] = useState({
+  const initialForm = {
     name: "",
     description: "",
     startTime: getLocalDateTime(), // default now
@@ -25,7 +23,10 @@ export default function MapSection() {
     cadence: "170",
     device: "",
     exportType: "GPX",
-  });
+  }
+  const [routeData, setRouteData] = useState(null);
+  const [isCoffeeOpen, setIsCoffeeOpen] = useState(false);
+  const [form, setForm] = useState(initialForm);
 
   const handleDownload = () => {
     if (!routeData) return alert("Coba buat rutenya dulu yaa!");
@@ -74,6 +75,8 @@ export default function MapSection() {
     }
 
     downloadFile(fileGenerate, form.exportType.toLocaleLowerCase(), form.name);
+    setForm(initialForm);
+    setRouteData(null);
     setIsCoffeeOpen(true);
   }
 
@@ -98,7 +101,7 @@ export default function MapSection() {
       duration = duration + ':00'
     } else {
       const realDistance = getRealDistance()
-      const totalDuration = realDistance > 0 ?  getDurationFromDistanceAndPace(realDistance, form.pace, form.activityType.toLocaleLowerCase()) : 0
+      const totalDuration = realDistance > 0 ? getDurationFromDistanceAndPace(realDistance, form.pace, form.activityType.toLocaleLowerCase()) : 0
       duration = totalDuration // hitung durasi berdasarkan jarak dan pace
     }
     return duration;
