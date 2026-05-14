@@ -62,6 +62,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-full antialiased">
+      <head>
+        <meta name="apple-mobile-web-app-title" content="ReTrack" />
+      </head>
       <body className={`${google_sans.className}`} >
         {children}
       </body>
