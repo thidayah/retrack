@@ -25,7 +25,7 @@ export default function CoffeeModal({ isOpen, onClose }) {
 
       {/* Modal */}
       <div
-        className="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 flex flex-col items-center gap-4"
+        className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 flex flex-col items-center gap-4"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
@@ -52,20 +52,20 @@ export default function CoffeeModal({ isOpen, onClose }) {
         </div>
 
         {/* QR Code area */}
-        <div className="w-48 h-48 rounded-xl border-2 border-dashed border-amber-300 bg-amber-50 flex flex-col items-center justify-center gap-2">
-          {/* Replace the content below with your actual QR code image:
-              <img src="/qr-donation.png" alt="QR Donasi" className="w-full h-full object-contain rounded-xl" />
-          */}
-          <Coffee className="w-10 h-10 text-amber-300" />
+        <div className="w-full h-full rounded-xl border-2 border-dashed border-primary/80 bg-amber-50 flex flex-col items-center justify-center gap-2">
+          {/* Replace the content below with your actual QR code image: */}
+          <img src="/qris.png" alt="QR Donasi" className="w-full h-full object-contain rounded-xl" />
+
+          {/* <Coffee className="w-10 h-10 text-amber-300" />
           <span className="text-xs text-amber-400 text-center px-2">
             Taruh QR code donasi kamu di sini
-          </span>
+          </span> */}
         </div>
 
         {/* Footer note */}
-        <p className="text-xs text-gray-400 flex items-center gap-1">
+        {/* <p className="text-xs text-gray-400 flex items-center gap-1">
           Dibuat dengan <Heart className="w-3 h-3 text-red-400 fill-red-400" /> oleh taufik
-        </p>
+        </p> */}
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { useState } from "react";
 import ActivityForm from "./ActivityForm";
 import Stats from "./Stats";
 import MapView from "./Map/MapView";
+import CoffeeModal from "./CoffeeModal";
 import { generateTCX } from "@/lib/tcx/tcx";
 import { generateGPX } from "@/lib/gpx/gpx";
 import { generateTrackpointsV2, generateTrackpointsV3 } from "@/lib/generator/trackpoints";
@@ -11,6 +12,7 @@ import { downloadFile, getDistance, getDurationFromDistanceAndPace, getLocalDate
 
 export default function MapSection() {
   const [routeData, setRouteData] = useState(null);
+  const [isCoffeeOpen, setIsCoffeeOpen] = useState(false);
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -72,6 +74,7 @@ export default function MapSection() {
     }
 
     downloadFile(fileGenerate, form.exportType.toLocaleLowerCase(), form.name);
+    setIsCoffeeOpen(true);
   }
 
   const getRealDistance = () => {
@@ -151,6 +154,7 @@ export default function MapSection() {
           />
         </div>
       </div>
+      <CoffeeModal isOpen={isCoffeeOpen} onClose={() => setIsCoffeeOpen(false)} />
     </section>
   );
 }
