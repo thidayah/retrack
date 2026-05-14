@@ -16,7 +16,7 @@ export default function Hero() {
   };
 
   return (
-    <section style={{ backgroundImage: "url('/hero.png')" }} className="relative overflow-hidden bg-linear-to-br from-gray-50 to-gray-100 bg-cover bg-top ">
+    <section style={{ backgroundImage: "url('/hero.webp')" }} className="relative overflow-hidden bg-linear-to-br from-gray-50 to-gray-100 bg-cover bg-top ">
       <div className="container mx-auto px-4 lg:px-6 py-12 lg:py-20 h-150 md:h-200 flex ">
         <div className="grid lg:grid-cols-2 gap-12 md:items-center">
           {/* Left Column - Content */}
