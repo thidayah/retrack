@@ -5,6 +5,7 @@ import ActivityForm from "./ActivityForm";
 import Stats from "./Stats";
 import MapView from "./Map/MapView";
 import CoffeeModal from "./CoffeeModal";
+import LimitModal from "./LimitModal";
 import { generateTCX } from "@/lib/tcx/tcx";
 import { generateGPX } from "@/lib/gpx/gpx";
 import { generateTrackpointsV2, generateTrackpointsV3 } from "@/lib/generator/trackpoints";
@@ -24,15 +25,42 @@ export default function MapSection() {
     device: "",
     exportType: "GPX",
   }
+  const LIMIT_KEY = 'retrack_download_limit';
+
   const [routeData, setRouteData] = useState(null);
   const [isCoffeeOpen, setIsCoffeeOpen] = useState(false);
+  const [isLimitOpen, setIsLimitOpen] = useState(true);
+  const [limitExpireAt, setLimitExpireAt] = useState(null);
   const [form, setForm] = useState(initialForm);
   const [clearTrigger, setClearTrigger] = useState(0);
+
+  const checkDownloadLimit = () => {
+    try {
+      const raw = localStorage.getItem(LIMIT_KEY);
+      if (!raw) return false;
+      const { expireAt } = JSON.parse(raw);
+      return Date.now() < expireAt ? expireAt : false;
+    } catch {
+      return false;
+    }
+  };
+
+  const setDownloadLimit = () => {
+    const expireAt = Date.now() + 24 * 60 * 60 * 1000;
+    localStorage.setItem(LIMIT_KEY, JSON.stringify({ expireAt }));
+  };
 
   const handleDownload = () => {
     if (!routeData) return alert("Coba buat rutenya dulu yaa!");
     if (!form.name) return alert('Nama aktivitas harus diisi')
     if (!form.device) return alert('Pilih perangkat harus diisi')
+
+    const activeLimit = checkDownloadLimit();
+    if (activeLimit) {
+      setLimitExpireAt(activeLimit);
+      setIsLimitOpen(true);
+      return;
+    }
 
     const trackpoints = generateTrackpointsV3({
       coordinates: routeData?.coordinates,
@@ -76,6 +104,7 @@ export default function MapSection() {
     }
 
     downloadFile(fileGenerate, form.exportType.toLocaleLowerCase(), form.name);
+    setDownloadLimit();
     setForm(initialForm);
     setRouteData(null);
     setClearTrigger(n => n + 1);
@@ -160,6 +189,7 @@ export default function MapSection() {
         </div>
       </div>
       <CoffeeModal isOpen={isCoffeeOpen} onClose={() => setIsCoffeeOpen(false)} />
+      <LimitModal isOpen={isLimitOpen} onClose={() => setIsLimitOpen(false)} expireAt={limitExpireAt} />
     </section>
   );
 }
