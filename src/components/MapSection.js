@@ -27,6 +27,7 @@ export default function MapSection() {
   const [routeData, setRouteData] = useState(null);
   const [isCoffeeOpen, setIsCoffeeOpen] = useState(false);
   const [form, setForm] = useState(initialForm);
+  const [clearTrigger, setClearTrigger] = useState(0);
 
   const handleDownload = () => {
     if (!routeData) return alert("Coba buat rutenya dulu yaa!");
@@ -77,6 +78,7 @@ export default function MapSection() {
     downloadFile(fileGenerate, form.exportType.toLocaleLowerCase(), form.name);
     setForm(initialForm);
     setRouteData(null);
+    setClearTrigger(n => n + 1);
     setIsCoffeeOpen(true);
   }
 
@@ -147,7 +149,7 @@ export default function MapSection() {
             Map Placeholder
           </div> */}
 
-          <MapView setRouteData={setRouteData} />
+          <MapView setRouteData={setRouteData} clearTrigger={clearTrigger} />
 
           <Stats
             distance={getTotalDistance()}
