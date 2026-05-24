@@ -326,18 +326,25 @@
 
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 
 const MapViewInner = dynamic(() => import("./MapInner"), {
   ssr: false,
 });
 
-export default function MapView({ setRouteData }) {
+export default function MapView({ setRouteData, clearTrigger }) {
   const [waypoints, setWaypoints] = useState([]);
 
   const undoStack = useRef([]);
   const redoStack = useRef([]);
+
+  useEffect(() => {
+    if (!clearTrigger) return;
+    setWaypoints([]);
+    undoStack.current = [];
+    redoStack.current = [];
+  }, [clearTrigger]);
 
   return (
     <MapViewInner

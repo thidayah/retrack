@@ -33,7 +33,8 @@ export default function ActivityForm({ form, setForm, onDownload }) {
     "Amazfit T-Rex 3",
     "Amazfit Active Max",
     // "Apple Watch",
-    "StravaGpx",
+    // "StravaGpx",
+    "Strava App",
   ];
 
   return (

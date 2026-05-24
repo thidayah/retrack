@@ -63,6 +63,9 @@ export default function Routing({
 
   const routingControlRef = useRef(null);
   const isUpdatingRef = useRef(false);
+  const startMarkerRef = useRef(null);
+  const endMarkerRef = useRef(null);
+  const kmMarkersRef = useRef([]);
 
   // 🧩 HANDLE CLICK MAP
   useEffect(() => {
@@ -106,6 +109,8 @@ export default function Routing({
         map.removeControl(routingControlRef.current);
         routingControlRef.current = null;
       }
+      kmMarkersRef.current.forEach(m => m.remove());
+      kmMarkersRef.current = [];
       return;
     }
 
@@ -141,10 +146,30 @@ export default function Routing({
           duration: route.summary.totalTime,
         };
 
-        console.log("ROUTE DATA:", data);
+        if (setRouteData) setRouteData(data);
 
-        if (setRouteData) {
-          setRouteData(data);
+        // KM MARKERS
+        kmMarkersRef.current.forEach(m => m.remove());
+        kmMarkersRef.current = [];
+
+        const coords = route.coordinates;
+        let accumulated = 0;
+        let nextKm = 1;
+
+        for (let i = 1; i < coords.length; i++) {
+          const segDist = L.latLng(coords[i - 1]).distanceTo(L.latLng(coords[i]));
+          accumulated += segDist;
+
+          while (accumulated >= nextKm * 1000) {
+            const icon = L.divIcon({
+              className: "",
+              html: `<div style="width:20px;height:20px;border-radius:50%;background:#111;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,0.5);border:2px solid white">${nextKm}</div>`,
+              iconSize: [20, 20],
+              iconAnchor: [10, 10],
+            });
+            kmMarkersRef.current.push(L.marker(coords[i], { icon, zIndexOffset: 5 }).addTo(map));
+            nextKm++;
+          }
         }
       });
 
@@ -172,6 +197,25 @@ export default function Routing({
     }
   }, [waypoints, map, setRouteData]);
 
+  // START / END MARKERS
+  useEffect(() => {
+    const makeIcon = (color) => L.divIcon({
+      className: "",
+      html: `<div style="width:14px;height:14px;border-radius:50%;background:${color};border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,0.4)"></div>`,
+      iconSize: [14, 14],
+      iconAnchor: [7, 7],
+    });
+
+    if (startMarkerRef.current) { startMarkerRef.current.remove(); startMarkerRef.current = null; }
+    if (endMarkerRef.current) { endMarkerRef.current.remove(); endMarkerRef.current = null; }
+
+    if (waypoints.length >= 1) {
+      startMarkerRef.current = L.marker(waypoints[0], { icon: makeIcon("#dc2626"), zIndexOffset: 10 }).addTo(map);
+    }
+    if (waypoints.length >= 2) {
+      endMarkerRef.current = L.marker(waypoints[waypoints.length - 1], { icon: makeIcon("#16a34a"), zIndexOffset: 10 }).addTo(map);
+    }
+  }, [waypoints, map]);
 
   return null;
 }
