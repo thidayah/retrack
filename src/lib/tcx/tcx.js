@@ -40,17 +40,19 @@ export function generateTCX(trackpoints, options = {}) {
 
   const points = trackpoints
     .map((p) => {
+      const hrBlock = p.hr != null
+        ? `\n          <HeartRateBpm><Value>${p.hr}</Value></HeartRateBpm>`
+        : '';
+      const cadenceBlock = p.cadence != null
+        ? `\n          <Cadence>${p.cadence}</Cadence>`
+        : '';
       return `
         <Trackpoint>
           <Time>${p.time}</Time>
           <Position>
             <LatitudeDegrees>${p.lat}</LatitudeDegrees>
             <LongitudeDegrees>${p.lng}</LongitudeDegrees>
-          </Position>
-          <HeartRateBpm>
-            <Value>${p.hr || 0}</Value>
-          </HeartRateBpm>
-          <Cadence>${(p.cadence || 0)}</Cadence>
+          </Position>${hrBlock}${cadenceBlock}
         </Trackpoint>`;
     })
     .join("");

@@ -21,7 +21,9 @@ export default function MapSection() {
     duration: "01:15",
     pace: "06:45",
     heartRate: "145",
+    heartRateActive: false,
     cadence: "170",
+    cadenceActive: false,
     device: "",
     exportType: "GPX",
   }
@@ -29,7 +31,7 @@ export default function MapSection() {
 
   const [routeData, setRouteData] = useState(null);
   const [isCoffeeOpen, setIsCoffeeOpen] = useState(false);
-  const [isLimitOpen, setIsLimitOpen] = useState(true);
+  const [isLimitOpen, setIsLimitOpen] = useState(false);
   const [limitExpireAt, setLimitExpireAt] = useState(null);
   const [form, setForm] = useState(initialForm);
   const [clearTrigger, setClearTrigger] = useState(0);
@@ -69,11 +71,14 @@ export default function MapSection() {
       duration: form.isDuration ? form.duration + ':00' : '',
       avgPaceOrSpeed: !form.isDuration ? form.pace : '',
       // avgPace: !form.isDuration ? form.pace : '',
-      avgHr: form.heartRate,
-      avgCadence: form.cadence,
+      avgHr: form.heartRateActive ? form.heartRate : null,
+      avgCadence: form.cadenceActive ? form.cadence : null,
       variability: 0.15,
       startTime: form.startTime, // WIB
     });
+
+    console.log({trackpoints});
+    
 
     let fileGenerate = null
 

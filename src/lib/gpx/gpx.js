@@ -36,15 +36,14 @@ xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1">
 
   const points = trackpoints
     .map((p) => {
+      const hrLine = p.hr != null ? `\n          <gpxtpx:hr>${p.hr}</gpxtpx:hr>` : '';
+      const cadLine = p.cadence != null ? `\n          <gpxtpx:cad>${p.cadence}</gpxtpx:cad>` : '';
+      const extensions = hrLine || cadLine
+        ? `\n      <extensions>\n        <gpxtpx:TrackPointExtension>${hrLine}${cadLine}\n        </gpxtpx:TrackPointExtension>\n      </extensions>`
+        : '';
       return `
     <trkpt lat="${p.lat}" lon="${p.lng}">
-      <time>${p.time}</time>
-      <extensions>
-        <gpxtpx:TrackPointExtension>
-          <gpxtpx:hr>${p.hr || 0}</gpxtpx:hr>
-          <gpxtpx:cad>${p.cadence || 0}</gpxtpx:cad>
-        </gpxtpx:TrackPointExtension>
-      </extensions>
+      <time>${p.time}</time>${extensions}
     </trkpt>`;
     })
     .join("");

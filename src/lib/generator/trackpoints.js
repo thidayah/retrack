@@ -182,7 +182,7 @@ export function generateTrackpointsV3({
   avgHr = 150,
   avgCadence = 170,
   variability = 0.05,
-  startTime = new Date()
+  startTime = new Date(),
 }) {
   if (!coordinates || coordinates.length < 2) return [];
 
@@ -296,28 +296,22 @@ export function generateTrackpointsV3({
       );
     }
 
-    // 🔥 HR curve
-    const hrBase = avgHr * getHrFactor(progress);
-    const hr = Math.round(hrBase + (Math.random() * 6 - 3));
-
     const point = {
       lat: coordinates[i].lat,
       lng: coordinates[i].lng,
       time: currentTime.toISOString(),
-      hr,
     };
 
-    // ✅ cadence hanya untuk non-ride
-    if (type !== "ride") {
-      // 🔥 cadence mengikuti pace/speed
-      const paceInfluence = 1 / getPaceFactor(progress);
-      const cadenceRaw =
-        avgCadence * paceInfluence + (Math.random() * 4 - 2);
+    if (avgHr != null) {
+      const hrBase = avgHr * getHrFactor(progress);
+      point.hr = Math.round(hrBase + (Math.random() * 6 - 3));
+    }
 
-      const cadence = Math.round(
-        Math.max(100, Math.min(190, cadenceRaw)) / 2
-      );
-      point.cadence = cadence
+    // ✅ cadence hanya untuk non-ride
+    if (type !== "ride" && avgCadence != null) {
+      const paceInfluence = 1 / getPaceFactor(progress);
+      const cadenceRaw = avgCadence * paceInfluence + (Math.random() * 4 - 2);
+      point.cadence = Math.round(Math.max(100, Math.min(190, cadenceRaw)) / 2);
     }
 
     trackpoints.push(point);

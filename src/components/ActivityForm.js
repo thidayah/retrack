@@ -25,6 +25,8 @@ export default function ActivityForm({ form, setForm, onDownload }) {
   ];
 
   const deviceOptions = [
+    "Strava App",
+    // "StravaGpx",
     "Garmin Forerunner 255",
     "Garmin fēnix 7",
     "Garmin Instinct 2",
@@ -33,8 +35,6 @@ export default function ActivityForm({ form, setForm, onDownload }) {
     "Amazfit T-Rex 3",
     "Amazfit Active Max",
     // "Apple Watch",
-    // "StravaGpx",
-    "Strava App",
   ];
 
   return (
@@ -147,35 +147,61 @@ export default function ActivityForm({ form, setForm, onDownload }) {
 
         {/* HR */}
         <div>
-          <div className=" flex justify-between items-center">
-            <label className="block text-sm font-bold text-gray-700 pb-1">Heart Rate</label>
-            <span className="text-sm text-gray-500">{form.heartRate || '145'} bpm</span>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setForm({ ...form, heartRateActive: !form.heartRateActive })}
+                className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors cursor-pointer ${form.heartRateActive ? 'bg-primary' : 'bg-gray-300'}`}
+              >
+                <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${form.heartRateActive ? 'translate-x-4' : 'translate-x-0.5'}`} />
+              </button>
+              <label className="block text-sm font-bold text-gray-700">Heart Rate</label>
+            </div>
+            {form.heartRateActive && (
+              <span className="text-sm text-gray-500">{form.heartRate || '145'} bpm</span>
+            )}
           </div>
-          <input
-            type="range"
-            min={90}
-            max={210}
-            className="w-full bg-linear-to-r from-primary/20 to-primary appearance-none rounded-full h-1.5 cursor-pointer accent-primary"
-            value={form.heartRate}
-            onChange={(e) => setForm({ ...form, heartRate: e.target.value })}
-          />
+          {form.heartRateActive && (
+            <input
+              type="range"
+              min={90}
+              max={210}
+              className="w-full mt-1 bg-linear-to-r from-primary/20 to-primary appearance-none rounded-full h-1.5 cursor-pointer accent-primary"
+              value={form.heartRate}
+              onChange={(e) => setForm({ ...form, heartRate: e.target.value })}
+            />
+          )}
         </div>
 
         {/* Cadence */}
         {form.activityType !== 'Ride' && (
           <div>
-            <div className=" flex justify-between items-center">
-              <label className="block text-sm font-bold text-gray-700 pb-1">Cadence</label>
-              <span className="text-sm text-gray-500">{form.cadence || '170'} spm</span>
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setForm({ ...form, cadenceActive: !form.cadenceActive })}
+                  className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors cursor-pointer ${form.cadenceActive ? 'bg-primary' : 'bg-gray-300'}`}
+                >
+                  <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${form.cadenceActive ? 'translate-x-4' : 'translate-x-0.5'}`} />
+                </button>
+                <label className="block text-sm font-bold text-gray-700">Cadence</label>
+              </div>
+              {form.cadenceActive && (
+                <span className="text-sm text-gray-500">{form.cadence || '170'} spm</span>
+              )}
             </div>
-            <input
-              type="range"
-              min={100}
-              max={190}
-              className="w-full bg-linear-to-r from-primary/20 via-primary/90 to-primary appearance-none rounded-full h-1.5 cursor-pointer accent-primary"
-              value={form.cadence}
-              onChange={(e) => setForm({ ...form, cadence: e.target.value })}
-            />
+            {form.cadenceActive && (
+              <input
+                type="range"
+                min={100}
+                max={190}
+                className="w-full mt-1 bg-linear-to-r from-primary/20 via-primary/90 to-primary appearance-none rounded-full h-1.5 cursor-pointer accent-primary"
+                value={form.cadence}
+                onChange={(e) => setForm({ ...form, cadence: e.target.value })}
+              />
+            )}
           </div>
         )}
 
