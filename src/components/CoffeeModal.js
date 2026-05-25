@@ -37,7 +37,7 @@ export default function CoffeeModal({ isOpen, onClose }) {
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
