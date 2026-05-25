@@ -55,12 +55,12 @@ export default function MapSection() {
     if (!form.name) return alert('Nama aktivitas harus diisi')
     if (!form.device) return alert('Pilih perangkat harus diisi')
 
-    const activeLimit = checkDownloadLimit();
-    if (activeLimit) {
-      setLimitExpireAt(activeLimit);
-      setIsLimitOpen(true);
-      return;
-    }
+    // const activeLimit = checkDownloadLimit();
+    // if (activeLimit) {
+    //   setLimitExpireAt(activeLimit);
+    //   setIsLimitOpen(true);
+    //   return;
+    // }
 
     const trackpoints = generateTrackpointsV3({
       coordinates: routeData?.coordinates,
