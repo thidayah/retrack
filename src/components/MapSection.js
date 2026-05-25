@@ -75,10 +75,7 @@ export default function MapSection() {
       avgCadence: form.cadenceActive ? form.cadence : null,
       variability: 0.15,
       startTime: form.startTime, // WIB
-    });
-
-    console.log({trackpoints});
-    
+    });    
 
     let fileGenerate = null
 
